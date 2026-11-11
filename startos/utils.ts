@@ -37,6 +37,34 @@ export const mainMounts = sdk.Mounts.of()
     readonly: false,
   })
 
+/**
+ * Mounts for the CLN Application UI. It only reads/writes its own settings
+ * (`data/app`) and the rune file the wrapper writes (`.commando-env`; the UI
+ * appends an invoice rune to it), so it does not get the whole `main` volume
+ * (which holds `bitcoin/hsm_secret` and the wallet database). `public` is
+ * read-only.
+ */
+export const uiMounts = sdk.Mounts.of()
+  .mountVolume({
+    volumeId: 'main',
+    subpath: 'data/app',
+    mountpoint: `${rootDir}/data/app`,
+    readonly: false,
+  })
+  .mountVolume({
+    volumeId: 'main',
+    subpath: '.commando-env',
+    mountpoint: `${rootDir}/.commando-env`,
+    readonly: false,
+    type: 'file',
+  })
+  .mountVolume({
+    volumeId: 'public',
+    subpath: null,
+    mountpoint: publicMountpoint,
+    readonly: true,
+  })
+
 /** Host path of the rune dependents mount as `public/payments`. */
 export const paymentsRuneFile = '/media/startos/volumes/public/payments/rune'
 

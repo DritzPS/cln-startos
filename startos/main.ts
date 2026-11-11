@@ -38,6 +38,7 @@ import {
   paymentsRestrictions,
   paymentsRuneFile,
   rootDir,
+  uiMounts,
   uiPort,
   wsPort,
 } from './utils'
@@ -326,7 +327,7 @@ export const main = sdk.setupMain(async ({ effects }) => {
         {
           imageId: 'ui',
         },
-        mainMounts,
+        uiMounts,
         'cln-application-sub',
       ),
       exec: {
